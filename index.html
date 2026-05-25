@@ -1,0 +1,2808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="高考志愿填报指南，提供权威志愿填报参考信息">
+    <title>高考志愿填报指南</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <script src="config.js"></script>
+    <style>
+        :root {
+            --bg: #F7F8FF;
+            --white: #ffffff;
+            --dark: #1E293B;
+            --text: #334155;
+            --text2: #94A3B8;
+            --accent: #7C6FEF;
+            --accent2: #F472B6;
+            --accent3: #34D399;
+            --border: rgba(124, 111, 239, 0.12);
+            --sh-xs: 0 2px 8px rgba(99, 102, 241, 0.06);
+            --sh-sm: 0 4px 20px rgba(99, 102, 241, 0.09);
+            --sh-md: 0 8px 32px rgba(99, 102, 241, 0.13);
+            --sh-lg: 0 16px 48px rgba(99, 102, 241, 0.18);
+            --r: 20px;
+            --rs: 12px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+            background: #D8DBF2;
+            background-attachment: fixed;
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        img {
+            display: block;
+            max-width: 100%
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        /* ===== NAV ===== */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 300;
+            height: 54px;
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: saturate(180%) blur(22px);
+            -webkit-backdrop-filter: saturate(180%) blur(22px);
+            border-bottom: 1px solid rgba(108, 99, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(16px, 4vw, 52px);
+            transition: box-shadow .3s;
+        }
+
+        .nav.scrolled {
+            box-shadow: 0 4px 22px rgba(99, 102, 241, 0.12)
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: clamp(.95rem, 3vw, 1.1rem);
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .nav-logo .a {
+            background: linear-gradient(90deg, #6C63FF, #FF6584);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #7C6FEF, #F472B6);
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 22px;
+            font-size: clamp(.74rem, 2.5vw, .86rem);
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all .22s;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, .22) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform .5s
+        }
+
+        .nav-btn:hover::after {
+            transform: translateX(100%)
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, #6B5EDE, #E05CAA);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(124, 111, 239, .35)
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: clamp(52px, 8vw, 88px) clamp(20px, 5vw, 80px) clamp(48px, 7vw, 76px);
+            background: linear-gradient(160deg, #F8F9FF 0%, #EEF0FF 40%, #FCF4FF 70%, #FFF6FB 100%);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(72px);
+            pointer-events: none;
+            animation: orbF 9s ease-in-out infinite alternate
+        }
+
+        .orb1 {
+            width: 600px;
+            height: 600px;
+            background: rgba(124, 111, 239, 0.18);
+            top: -220px;
+            left: -150px;
+            animation-delay: 0s
+        }
+
+        .orb2 {
+            width: 420px;
+            height: 420px;
+            background: rgba(244, 114, 182, 0.15);
+            top: -100px;
+            right: -100px;
+            animation-delay: -3.5s
+        }
+
+        .orb3 {
+            width: 300px;
+            height: 300px;
+            background: rgba(14, 165, 233, .09);
+            bottom: -80px;
+            left: 35%;
+            animation-delay: -6s
+        }
+
+        @keyframes orbF {
+            0% {
+                transform: translate(0, 0) scale(1)
+            }
+
+            100% {
+                transform: translate(20px, 28px) scale(1.07)
+            }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+            background: rgba(124, 111, 239, 0.14);
+            border: 1.5px solid rgba(124, 111, 239, 0.45);
+            color: #5B51D8;
+            padding: 6px 20px;
+            border-radius: 24px;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .4px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(12px);
+            animation: fdD .7s ease both;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            background: var(--accent2);
+            border-radius: 50%;
+            animation: pdot 2s ease-in-out infinite
+        }
+
+        @keyframes pdot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: .5;
+                transform: scale(1.5)
+            }
+        }
+
+        .hero h1 {
+            position: relative;
+            z-index: 1;
+            font-size: clamp(2.5rem, 7.5vw, 4.8rem);
+            font-weight: 900;
+            color: var(--dark);
+            line-height: 1.08;
+            margin-bottom: 16px;
+            letter-spacing: -.04em;
+            animation: fdU .75s .1s ease both;
+        }
+
+        .hero h1 .g {
+            background: linear-gradient(100deg, #6C63FF 0%, #FF6584 50%, #43D9AD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: gShift 4s linear infinite;
+        }
+
+        @keyframes gShift {
+            0% {
+                background-position: 0%
+            }
+
+            100% {
+                background-position: 200%
+            }
+        }
+
+        .hero-sub {
+            position: relative;
+            z-index: 1;
+            font-size: clamp(.93rem, 2.5vw, 1.15rem);
+            color: #64748B;
+            max-width: 520px;
+            margin: 0 auto 28px;
+            line-height: 1.75;
+            animation: fdU .75s .2s ease both;
+        }
+
+        .hero-btns {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            animation: fdU .75s .3s ease both;
+        }
+
+        .btn-p {
+            background: linear-gradient(135deg, #7C6FEF, #F472B6);
+            color: #fff;
+            padding: 14px 40px;
+            border-radius: 32px;
+            font-size: clamp(.92rem, 2.5vw, 1.06rem);
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: .02em;
+            box-shadow: 0 6px 20px rgba(124, 111, 239, .32);
+            transition: all .25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-p::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, .22) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform .5s
+        }
+
+        .btn-p:hover::after {
+            transform: translateX(100%)
+        }
+
+        .btn-p:hover {
+            background: linear-gradient(135deg, #6B5EDE, #E05CAA);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(124, 111, 239, .42)
+        }
+
+        .btn-g {
+            background: rgba(255, 255, 255, 0.88);
+            color: #6B5EDE;
+            border: 2px solid rgba(124, 111, 239, .55);
+            padding: 14px 40px;
+            border-radius: 32px;
+            font-size: clamp(.92rem, 2.5vw, 1.06rem);
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all .25s;
+            backdrop-filter: blur(8px);
+        }
+
+        .btn-g:hover {
+            background: #fff;
+            border-color: #7C6FEF;
+            color: #6B5EDE;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(124, 111, 239, .18);
+        }
+
+        /* ===== COUNTDOWN (hero内, 超大) ===== */
+        .cds {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            gap: clamp(12px, 3vw, 32px);
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fdU .75s .45s ease both;
+        }
+
+        @keyframes floatCard {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+        }
+
+        .cd {
+            text-align: center;
+            min-width: clamp(130px, 18vw, 190px);
+            background: rgba(255, 255, 255, .82);
+            border: 1.5px solid rgba(99, 102, 241, .22);
+            border-radius: 22px;
+            padding: clamp(18px, 3vw, 28px) clamp(14px, 3vw, 32px);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 12px 36px rgba(99, 102, 241, .18);
+            animation: floatCard 4s ease-in-out infinite;
+            transition: box-shadow .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cd:nth-child(2) {
+            animation-delay: -2s;
+        }
+
+        .cd::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+        }
+
+        .cd:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--sh-lg)
+        }
+
+        .cd-n {
+            font-size: clamp(3.8rem, 9vw, 6.2rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -4px;
+            filter: drop-shadow(0 2px 12px rgba(99, 102, 241, .28));
+        }
+
+        .cd-n .u {
+            font-size: .33em;
+            letter-spacing: 0;
+            font-weight: 800;
+            -webkit-text-fill-color: var(--text2);
+            margin-left: 2px
+        }
+
+        .cd-l {
+            font-size: .8rem;
+            color: var(--text2);
+            margin-top: 8px;
+            font-weight: 600
+        }
+
+        .cd-l strong {
+            display: block;
+            font-size: .9rem;
+            color: var(--text);
+            margin-bottom: 2px;
+            font-weight: 800
+        }
+
+        /* ===== HERO BUBBLES ===== */
+        #bubbleWrap {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .hb:hover {
+            filter: brightness(1.18);
+            z-index: 10;
+        }
+
+        .hb {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 16px 36px;
+            border-radius: 999px;
+            font-size: clamp(1rem, 2vw, 1.12rem);
+            font-weight: 700;
+            white-space: nowrap;
+            will-change: transform, opacity;
+            cursor: pointer;
+            pointer-events: auto;
+            line-height: 1.5;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.16);
+            letter-spacing: .3px;
+            opacity: 1;
+            transition: opacity 0.6s ease;
+            color: #fff;
+        }
+
+        .hb-0 {
+            background: #6C63FF;
+        }
+
+        .hb-1 {
+            background: #FF6584;
+        }
+
+        .hb-2 {
+            background: #43D9AD;
+        }
+
+        .hb-3 {
+            background: #A855F7;
+        }
+
+        .hb-4 {
+            background: #F472B6;
+        }
+
+        .hb-5 {
+            background: #34D399;
+        }
+
+        .hb-6 {
+            background: #818CF8;
+        }
+
+        .hb-7 {
+            background: #FF8FA3;
+        }
+
+        @keyframes wm-scroll {
+            0% {
+                transform: translateY(-50%) rotate(-5deg) translateX(0);
+            }
+
+            100% {
+                transform: translateY(-50%) rotate(-5deg) translateX(-50%);
+            }
+        }
+
+        @keyframes tmv {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ===== QUICK LINKS ===== */
+        .ql-sec {
+            background: #CBCEE8;
+            padding: clamp(36px, 5vw, 64px) clamp(12px, 2vw, 32px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ql-sec::before {
+            display: none;
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%) rotate(-5deg);
+            font-size: clamp(1.3rem, 2.8vw, 2rem);
+            font-weight: 900;
+            color: rgba(13, 33, 80, 0.05);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            letter-spacing: 5px;
+            animation: wm-scroll 38s linear infinite;
+        }
+
+        .ql-inner {
+            max-width: 1400px;
+            margin: 0 auto
+        }
+
+        .sec-head {
+            text-align: center;
+            margin-bottom: clamp(22px, 4vw, 38px)
+        }
+
+        .eyebrow {
+            font-size: .7rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            opacity: .7;
+        }
+
+        .sec-ttl {
+            font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+            font-weight: 800;
+            color: var(--dark);
+            letter-spacing: -.02em;
+            line-height: 1.2
+        }
+
+        .sec-sub {
+            font-size: clamp(.86rem, 2vw, .98rem);
+            color: var(--text2);
+            margin-top: 10px;
+            max-width: 440px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7
+        }
+
+        .ql-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: clamp(14px, 1.8vw, 22px);
+            position: relative;
+            z-index: 1;
+        }
+
+        @media(max-width:900px) {
+            .ql-grid {
+                grid-template-columns: repeat(4, 1fr)
+            }
+        }
+
+        @media(max-width:560px) {
+            .ql-grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        .ql-card {
+            border-radius: 22px;
+            padding: clamp(28px, 4vw, 42px) 16px;
+            text-align: center;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.10);
+            border: none;
+            cursor: pointer;
+            display: block;
+            transition: transform .28s cubic-bezier(.34, 1.56, .64, 1), box-shadow .28s ease;
+            position: relative;
+            overflow: hidden;
+            animation: floatCard 5s ease-in-out infinite;
+        }
+
+        .ql-card:nth-child(2) {
+            animation-delay: -.6s;
+        }
+
+        .ql-card:nth-child(3) {
+            animation-delay: -1.2s;
+        }
+
+        .ql-card:nth-child(4) {
+            animation-delay: -1.8s;
+        }
+
+        .ql-card:nth-child(5) {
+            animation-delay: -2.4s;
+        }
+
+        .ql-card:nth-child(6) {
+            animation-delay: -3.0s;
+        }
+
+        .ql-card:nth-child(7) {
+            animation-delay: -3.6s;
+        }
+
+        .ql-card:nth-child(8) {
+            animation-delay: -4.2s;
+        }
+
+        .ql-card:nth-child(9) {
+            animation-delay: -.3s;
+        }
+
+        .ql-card:nth-child(10) {
+            animation-delay: -.9s;
+        }
+
+        .ql-card::after {
+            display: none;
+        }
+
+        /* 卡片色系 — 极淡粉彩，8色循环 */
+        .ql-card:nth-child(8n+1) {
+            background: #F5F3FF
+        }
+
+        .ql-card:nth-child(8n+2) {
+            background: #FFF1F6
+        }
+
+        .ql-card:nth-child(8n+3) {
+            background: #ECFDF5
+        }
+
+        .ql-card:nth-child(8n+4) {
+            background: #FFFBEB
+        }
+
+        .ql-card:nth-child(8n+5) {
+            background: #EFF6FF
+        }
+
+        .ql-card:nth-child(8n+6) {
+            background: #FDF4FF
+        }
+
+        .ql-card:nth-child(8n+7) {
+            background: #F0FDFA
+        }
+
+        .ql-card:nth-child(8n+0) {
+            background: #FFF1F2
+        }
+
+        .ql-card:nth-child(8n+1) .ql-icon {
+            background: rgba(124, 111, 239, .15)
+        }
+
+        .ql-card:nth-child(8n+2) .ql-icon {
+            background: rgba(244, 114, 182, .15)
+        }
+
+        .ql-card:nth-child(8n+3) .ql-icon {
+            background: rgba(52, 211, 153, .15)
+        }
+
+        .ql-card:nth-child(8n+4) .ql-icon {
+            background: rgba(251, 191, 36, .15)
+        }
+
+        .ql-card:nth-child(8n+5) .ql-icon {
+            background: rgba(96, 165, 250, .15)
+        }
+
+        .ql-card:nth-child(8n+6) .ql-icon {
+            background: rgba(232, 121, 249, .15)
+        }
+
+        .ql-card:nth-child(8n+7) .ql-icon {
+            background: rgba(45, 212, 191, .15)
+        }
+
+        .ql-card:nth-child(8n+0) .ql-icon {
+            background: rgba(251, 113, 133, .15)
+        }
+
+        .ql-sec .sec-ttl {
+            color: var(--dark);
+        }
+
+        .ql-sec .sec-sub {
+            color: var(--text2);
+        }
+
+        .ql-sec .eyebrow {
+            color: var(--accent2);
+            letter-spacing: 4px;
+        }
+
+        .ql-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(99, 102, 241, .13) !important;
+        }
+
+        .ql-icon {
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            margin: 0 auto 14px;
+            width: 74px;
+            height: 74px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform .3s;
+        }
+
+        .ql-card:hover .ql-icon {
+            transform: scale(1.1) rotate(-6deg)
+        }
+
+        .ql-t {
+            font-size: clamp(.9rem, 1.5vw, 1.02rem);
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px
+        }
+
+        .ql-d {
+            font-size: clamp(.66rem, 1.2vw, .76rem);
+            color: var(--text2);
+            line-height: 1.55;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.62);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 8px;
+            padding: 2px 8px;
+            margin-top: 2px;
+        }
+
+        /* ===== SECTION SHELL (通用) ===== */
+        .sec {
+            padding: clamp(28px, 5vw, 52px) clamp(16px, 4vw, 52px)
+        }
+
+        .sec-w {
+            background: #CBCEE8;
+        }
+
+        .sec-g {
+            background: #D8DBF2;
+        }
+
+        .sec-grd {
+            background: linear-gradient(160deg, #C4C0E8 0%, #CEC3E8 50%, #D0C3E0 100%);
+            padding-top: clamp(18px, 3vw, 32px) !important;
+        }
+
+        .sec-in {
+            max-width: 1060px;
+            margin: 0 auto
+        }
+
+        .sec-in-w {
+            max-width: 1400px;
+            margin: 0 auto
+        }
+
+        /* ===== CAROUSEL — static grid ===== */
+        .car-wrap {
+            overflow: visible !important;
+            background: transparent !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            aspect-ratio: unset !important;
+            max-height: none !important;
+            height: auto !important;
+            width: 100%;
+        }
+
+        .car-track {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(12px, 2vw, 20px);
+            transform: none !important;
+            transition: none
+        }
+
+        .car-slide {
+            flex: none;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: var(--sh-sm);
+            transition: transform .28s ease, box-shadow .28s ease;
+            aspect-ratio: 16/7;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .car-slide:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--sh-md)
+        }
+
+        .car-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .car-ph {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px
+        }
+
+        .car-ph .cpm {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 700;
+            color: var(--dark)
+        }
+
+        .car-ph .cps {
+            font-size: clamp(.68rem, 2vw, .84rem);
+            color: var(--text2)
+        }
+
+        .car-ctl {
+            display: none
+        }
+
+        .car-btn {
+            pointer-events: all;
+            background: rgba(255, 255, 255, .85);
+            backdrop-filter: blur(12px);
+            color: var(--accent2);
+            border: 1px solid rgba(99, 102, 241, .2);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.35rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .22s;
+            box-shadow: var(--sh-sm);
+        }
+
+        .car-btn:hover {
+            background: white;
+            box-shadow: var(--sh-md);
+            transform: scale(1.1)
+        }
+
+        @media(max-width:480px) {
+            .car-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1.1rem
+            }
+        }
+
+        .car-dots,
+        .car-dot {
+            display: none
+        }
+
+        /* ===== CTA ===== */
+        .cta {
+            background: linear-gradient(150deg, #EDE9FF 0%, #F8EBFF 45%, #FFDFF4 100%);
+            padding: clamp(36px, 6vw, 62px) clamp(20px, 5vw, 80px);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before,
+        .cta::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .05);
+            pointer-events: none
+        }
+
+        .cta::before {
+            width: 500px;
+            height: 500px;
+            top: -200px;
+            left: -100px
+        }
+
+        .cta::after {
+            width: 350px;
+            height: 350px;
+            bottom: -150px;
+            right: -60px
+        }
+
+        .cta h2 {
+            color: var(--dark);
+            font-size: clamp(1.2rem, 4vw, 1.85rem);
+            margin-bottom: 10px;
+            font-weight: 900;
+            position: relative;
+            z-index: 1
+        }
+
+        .cta p {
+            color: var(--text2);
+            font-size: clamp(.85rem, 2vw, 1rem);
+            margin-bottom: 28px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.75;
+            position: relative;
+            z-index: 1
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, #7C6FEF, #F472B6);
+            color: white;
+            border: none;
+            padding: 15px 48px;
+            border-radius: 32px;
+            font-size: clamp(.95rem, 2.5vw, 1.1rem);
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            box-shadow: 0 8px 24px rgba(124, 111, 239, .32);
+            transition: all .25s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-btn:hover {
+            background: linear-gradient(135deg, #6B5EDE, #E05CAA);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(124, 111, 239, .42)
+        }
+
+        /* ===== ADS ROW ===== */
+        .ad-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(12px, 2vw, 20px);
+            margin-top: clamp(16px, 2vw, 22px);
+        }
+
+        @media(max-width:860px) {
+            .ad-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:480px) {
+            .ad-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ad-card {
+            border-radius: 20px;
+            overflow: hidden;
+            background: white;
+            box-shadow: var(--sh-sm);
+            border: 1.5px solid var(--border);
+            display: block;
+            color: inherit;
+            transition: all .28s ease;
+        }
+
+        .ad-card:hover {
+            transform: translateY(-6px) scale(1.015);
+            box-shadow: var(--sh-lg);
+            border-color: rgba(99, 102, 241, .3)
+        }
+
+        .ad-card img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover
+        }
+
+        .ad-ph {
+            aspect-ratio: 4/3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            gap: 8px
+        }
+
+        .ad-ph .apm {
+            font-size: clamp(.85rem, 2.5vw, 1rem);
+            font-weight: 700
+        }
+
+        .ad-ph .aps {
+            font-size: clamp(.62rem, 1.8vw, .76rem);
+            opacity: .5
+        }
+
+        .ad-info {
+            padding: 12px 16px 14px
+        }
+
+        .ad-ttl {
+            font-size: clamp(.84rem, 2vw, .94rem);
+            font-weight: 700;
+            color: var(--dark)
+        }
+
+        /* ===== PROVINCE ===== */
+        .prov-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 16px
+        }
+
+        @media(max-width:480px) {
+            .prov-grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        .prov-btn {
+            background: #ffffff;
+            border: 1.5px solid rgba(124, 111, 239, .14);
+            border-radius: 14px;
+            padding: 16px 8px;
+            text-align: center;
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: block;
+            transition: all .2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+        }
+
+        .prov-btn:hover {
+            background: linear-gradient(135deg, #7C6FEF, #F472B6);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(124, 111, 239, .28);
+        }
+
+        /* ===== FLOAT BTN ===== */
+        .float-w {
+            position: fixed;
+            bottom: 28px;
+            right: 22px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px
+        }
+
+        .float-btn {
+            background: linear-gradient(135deg, #07C160, #0ab059);
+            color: white;
+            border: none;
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            font-size: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 32px rgba(7, 193, 96, .55);
+            transition: all .22s;
+            position: relative;
+        }
+
+        .float-btn svg {
+            width: 42px;
+            height: 42px;
+            display: block;
+        }
+
+        .float-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #07C160, #0ab059);
+            animation: fp 2.5s ease-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes fp {
+            0% {
+                transform: scale(1);
+                opacity: .65
+            }
+
+            100% {
+                transform: scale(2);
+                opacity: 0
+            }
+        }
+
+        .float-btn:hover {
+            transform: scale(1.12);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, .7)
+        }
+
+        .float-lbl {
+            background: rgba(7, 193, 96, .92);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 14px;
+            font-size: .82rem;
+            font-weight: 700;
+            white-space: nowrap;
+            backdrop-filter: blur(6px)
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            border-top: none;
+            padding: clamp(32px, 5vw, 52px) clamp(20px, 4vw, 52px);
+            text-align: center
+        }
+
+        .foot-logo {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 16px
+        }
+
+        .foot-logo .a {
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .foot-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px
+        }
+
+        .foot-links a {
+            color: rgba(255, 255, 255, .48);
+            font-size: .8rem;
+            transition: color .2s
+        }
+
+        .foot-links a:hover {
+            color: white
+        }
+
+        .foot-copy {
+            color: rgba(255, 255, 255, .25);
+            font-size: .74rem;
+            line-height: 2
+        }
+
+        .foot-copy a {
+            color: rgba(255, 255, 255, .44)
+        }
+
+        .foot-copy a:hover {
+            color: white
+        }
+
+        /* ===== ANIM ===== */
+        @keyframes fdU {
+            from {
+                opacity: 0;
+                transform: translateY(28px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes fdD {
+            from {
+                opacity: 0;
+                transform: translateY(-16px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .fu {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity .68s ease, transform .68s ease
+        }
+
+        .fu.on {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .fu:nth-child(1) {
+            transition-delay: 0s
+        }
+
+        .fu:nth-child(2) {
+            transition-delay: .08s
+        }
+
+        .fu:nth-child(3) {
+            transition-delay: .16s
+        }
+
+        .fu:nth-child(4) {
+            transition-delay: .24s
+        }
+
+        .fu:nth-child(5) {
+            transition-delay: .08s
+        }
+
+        .fu:nth-child(6) {
+            transition-delay: .16s
+        }
+
+        .fu:nth-child(7) {
+            transition-delay: .24s
+        }
+
+        .fu:nth-child(8) {
+            transition-delay: .32s
+        }
+
+        /* ===== BUBBLE POPUP ===== */
+        #bubblePopup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 8000;
+            background: rgba(30, 20, 60, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #bubblePopup.on {
+            display: flex;
+        }
+
+        #bubblePopBox {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 24px;
+            width: min(90vw, 420px);
+            box-shadow: 0 24px 64px rgba(108, 99, 255, 0.22), 0 4px 16px rgba(0, 0, 0, 0.10);
+            overflow: hidden;
+            animation: popIn .28s cubic-bezier(.34, 1.56, .64, 1) both;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(.82);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        #bubblePopHd {
+            padding: 20px 22px 16px;
+            background: linear-gradient(100deg, #6C63FF 0%, #FF6584 55%, #43D9AD 100%);
+            background-size: 200% auto;
+            animation: gShift 6s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #bubblePopTitle {
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        #bubblePopClose {
+            background: rgba(255, 255, 255, .22);
+            border: none;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #bubblePopBody {
+            padding: 20px 22px 18px;
+        }
+
+        #bubblePopAnalysis {
+            font-size: .93rem;
+            color: #374151;
+            line-height: 1.78;
+            margin-bottom: 12px;
+        }
+
+        #bubblePopNote {
+            font-size: .78rem;
+            color: #6B7280;
+            margin-bottom: 16px;
+            padding: 8px 12px;
+            background: #F3F4F6;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        #bubblePopCta {
+            display: block;
+            width: 100%;
+            padding: 13px 0;
+            background: linear-gradient(135deg, #6C63FF, #FF6584);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: .97rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: opacity .2s;
+        }
+
+        #bubblePopCta:hover {
+            opacity: .88;
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        #admOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 15, 30, 0.72);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #admOverlay.on {
+            display: flex;
+        }
+
+        #admBox {
+            background: #fff;
+            border-radius: 16px;
+            width: min(92vw, 780px);
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 24px 72px rgba(0, 0, 0, .32);
+        }
+
+        .adm-hd {
+            background: linear-gradient(135deg, #6C63FF, #FF6584);
+            color: #fff;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .adm-hd h2 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .adm-hd-r {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .adm-x {
+            background: rgba(255, 255, 255, .22);
+            border: none;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .adm-ghost {
+            background: rgba(255, 255, 255, .18);
+            border: 1.5px solid rgba(255, 255, 255, .5);
+            color: #fff;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: .78rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* login */
+        #admLogin {
+            padding: 36px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        #admLogin h3 {
+            font-size: 1rem;
+            color: #555;
+            margin: 0;
+        }
+
+        .adm-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: .95rem;
+            outline: none;
+            transition: border .2s;
+        }
+
+        .adm-input:focus {
+            border-color: #6C63FF;
+        }
+
+        #admErr {
+            color: #e53e3e;
+            font-size: .82rem;
+            min-height: 18px;
+        }
+
+        .adm-login-btn {
+            background: linear-gradient(135deg, #6C63FF, #FF6584);
+            color: #fff;
+            border: none;
+            padding: 13px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+
+        .adm-login-btn:hover {
+            opacity: .88;
+        }
+
+        /* tabs */
+        .adm-tabs {
+            display: flex;
+            border-bottom: 2px solid #f1f5f9;
+            flex-shrink: 0;
+            overflow-x: auto;
+        }
+
+        .adm-tab {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            font-size: .85rem;
+            font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all .2s;
+        }
+
+        .adm-tab.on {
+            color: #6C63FF;
+            border-bottom-color: #6C63FF;
+        }
+
+        /* pane */
+        .adm-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 22px;
+        }
+
+        .adm-pane {
+            display: none;
+        }
+
+        .adm-pane.on {
+            display: block;
+        }
+
+        .adm-label {
+            font-size: .78rem;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .adm-ta {
+            width: 100%;
+            min-height: 220px;
+            padding: 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: .88rem;
+            line-height: 1.8;
+            resize: vertical;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .adm-ta:focus {
+            border-color: #6C63FF;
+        }
+
+        .adm-hint {
+            font-size: .78rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        /* ql rows */
+        .adm-ql-row {
+            display: grid;
+            grid-template-columns: 52px 1fr 1fr 2fr 32px;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .adm-ql-row input {
+            padding: 8px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: .82rem;
+            outline: none;
+            width: 100%;
+        }
+
+        .adm-ql-row input:focus {
+            border-color: #6C63FF;
+        }
+
+        .adm-del {
+            background: #fee2e2;
+            color: #ef4444;
+            border: none;
+            border-radius: 6px;
+            width: 30px;
+            height: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .adm-add {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1.5px dashed #86efac;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: .82rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+
+        .adm-field-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        /* cd rows */
+        .adm-cd-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 32px;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .adm-cd-row input {
+            padding: 8px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: .82rem;
+            outline: none;
+            width: 100%;
+        }
+
+        .adm-cd-row input:focus {
+            border-color: #6C63FF;
+        }
+
+        /* image upload rows */
+        .adm-media-row {
+            display: grid;
+            grid-template-columns: 64px 1.4fr 72px 0.65fr 1fr 32px;
+            gap: 6px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .adm-media-row input {
+            padding: 8px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: .82rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .adm-media-row input:focus {
+            border-color: #6C63FF;
+            outline: none;
+        }
+
+        .adm-thumb-wrap {
+            width: 64px;
+            height: 42px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1.5px dashed #cbd5e1;
+            background: #f8fafc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+            transition: border-color .2s;
+        }
+
+        .adm-thumb-wrap:hover {
+            border-color: #6C63FF;
+        }
+
+        .adm-thumb-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .adm-thumb-icon {
+            font-size: 1.3rem;
+        }
+
+        .adm-upload-btn {
+            background: #f1f5f9;
+            border: 1.5px solid #e2e8f0;
+            color: #475569;
+            border-radius: 8px;
+            padding: 0 8px;
+            font-size: .75rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all .2s;
+        }
+
+        .adm-upload-btn:hover {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+        }
+
+        .adm-upload-btn.loading {
+            opacity: .6;
+            pointer-events: none;
+        }
+
+        .adm-cloud-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: .88rem;
+            font-weight: 600;
+            z-index: 99999;
+            opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .adm-cloud-toast.show {
+            opacity: 1;
+        }
+
+        @media(max-width:600px) {
+            .adm-media-row {
+                grid-template-columns: 48px 1fr 64px 32px;
+            }
+
+            .adm-media-row input:nth-child(4) {
+                display: none;
+            }
+        }
+
+        /* footer */
+        .adm-ft {
+            padding: 14px 22px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-shrink: 0;
+            background: #fafafa;
+        }
+
+        .adm-save {
+            background: linear-gradient(135deg, #6C63FF, #FF6584);
+            color: #fff;
+            border: none;
+            padding: 11px 28px;
+            border-radius: 10px;
+            font-size: .92rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+
+        .adm-save:hover {
+            opacity: .88;
+        }
+
+        .adm-reset-btn {
+            background: #f1f5f9;
+            color: #64748b;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 10px;
+            font-size: .88rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .adm-col-hd {
+            display: grid;
+            grid-template-columns: 52px 1fr 1fr 2fr 32px;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .adm-col-hd span {
+            font-size: .7rem;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        @media(max-width:560px) {
+            .adm-ql-row {
+                grid-template-columns: 42px 1fr 32px;
+            }
+
+            .adm-ql-row input:nth-child(3),
+            .adm-ql-row input:nth-child(4) {
+                display: none;
+            }
+
+            .adm-col-hd span:nth-child(3),
+            .adm-col-hd span:nth-child(4) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-logo"><span id="admTrigger" style="cursor:default;user-select:none">🎓</span> <span
+                class="a">高考</span>志愿填报指南</div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div id="bubbleWrap"></div>
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+        <div class="hero-badge">2026 · 权威志愿填报参考平台</div>
+        <h1>填报志愿<br><span class="g">稳中有数</span></h1>
+        <p class="hero-sub">整合阳光高考官方数据，科学选校、理性择专，助你迈向理想大学</p>
+        <div class="hero-btns">
+            <a href="#ql" class="btn-g">查看工具 ↓</a>
+        </div>
+        <div class="cds" id="cds"></div>
+    </section>
+
+
+    <!-- QUICK LINKS -->
+    <div class="ql-sec" id="ql">
+        <div class="ql-inner">
+            <div class="sec-head fu">
+                <div class="eyebrow">QUICK ACCESS</div>
+                <div class="sec-ttl">快捷入口</div>
+                <div class="sec-sub">一键直达阳光高考各功能页面</div>
+            </div>
+            <div class="ql-grid" id="qlGrid"></div>
+        </div>
+    </div>
+
+    <!-- ADS -->
+    <div class="sec sec-grd">
+        <div class="sec-in-w">
+            <div class="sec-head fu">
+                <div class="eyebrow">FEATURED ADS</div>
+                <div class="sec-ttl">精选广告</div>
+            </div>
+            <div class="fu">
+                <div class="car-wrap" id="carousel">
+                    <div class="car-track" id="carTr"></div>
+                    <div class="car-ctl">
+                        <button class="car-btn" id="prevBtn">&#8249;</button>
+                        <button class="car-btn" id="nextBtn">&#8250;</button>
+                    </div>
+                </div>
+                <div class="car-dots" id="carDots"></div>
+            </div>
+            <div class="ad-row fu" id="adGrid"></div>
+        </div>
+    </div>
+
+    <!-- PROVINCE -->
+    <div class="sec sec-g">
+        <div class="sec-in">
+            <div class="sec-head fu">
+                <div class="eyebrow">BY PROVINCE</div>
+                <div class="sec-ttl">按省份查询</div>
+                <div class="sec-sub">选择省份快速跳转阳光高考对应招生信息</div>
+            </div>
+            <div class="prov-grid fu" id="provGrid"></div>
+        </div>
+    </div>
+
+    <!-- HIDDEN ADMIN TRIGGER (bottom-left, 5 clicks) -->
+    <div id="admFooterTrigger"
+        style="position:fixed;bottom:0;left:0;width:72px;height:48px;z-index:9999;cursor:default;user-select:none;">
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="foot-logo">🎓 <span class="a">高考</span>志愿填报指南</div>
+        <div class="foot-links">
+            <a href="https://gaokao.chsi.com.cn/" target="_blank" rel="noopener">阳光高考官网</a>
+            <a href="https://www.moe.gov.cn/" target="_blank" rel="noopener">教育部官网</a>
+            <a href="https://gaokao.chsi.com.cn/sch/" target="_blank" rel="noopener">院校查询</a>
+            <a href="https://gaokao.chsi.com.cn/zyk/" target="_blank" rel="noopener">专业查询</a>
+        </div>
+        <div class="foot-copy">
+            本站信息仅供参考，请以 <a href="https://gaokao.chsi.com.cn/" target="_blank" rel="noopener">阳光高考官网</a> 权威数据为准<br>
+            © 高考志愿填报指南
+        </div>
+    </footer>
+
+    <!-- FLOAT -->
+    <div class="float-w" id="floatW" style="display:none">
+        <button class="float-btn" id="floatBtn" aria-label="联系咨询">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12 2C6.477 2 2 6.029 2 11c0 2.59 1.193 4.922 3.103 6.573L4 21l4.147-1.382A10.6 10.6 0 0012 20c5.523 0 10-4.029 10-9S17.523 2 12 2z"
+                    fill="white" />
+                <circle cx="8" cy="11" r="1.4" fill="#07C160" />
+                <circle cx="12" cy="11" r="1.4" fill="#07C160" />
+                <circle cx="16" cy="11" r="1.4" fill="#07C160" />
+            </svg>
+        </button>
+        <div class="float-lbl" id="floatLbl">立即咨询</div>
+    </div>
+
+    <script>
+        (function () {
+            /* --- apply any admin overrides saved in localStorage --- */
+            try {
+                var _ov = localStorage.getItem('gaokao_admin_cfg');
+                if (_ov) {
+                    var _ovObj = JSON.parse(_ov);
+                    Object.keys(_ovObj).forEach(function (k) {
+                        window.SITE_CONFIG[k] = _ovObj[k];
+                    });
+                }
+            } catch (e) { }
+
+            var cfg = window.SITE_CONFIG;
+            var BP = ['linear-gradient(135deg,#fce4ec,#f8bbd0)', 'linear-gradient(135deg,#e8eaf6,#c5cae9)', 'linear-gradient(135deg,#e0f7fa,#b2ebf2)', 'linear-gradient(135deg,#f3e5f5,#e1bee7)'];
+            var AP = ['linear-gradient(135deg,#ede9ff,#ddd6fe)', 'linear-gradient(135deg,#d1faf3,#a7f3d0)', 'linear-gradient(135deg,#fff3e0,#fed7aa)', 'linear-gradient(135deg,#dbeeff,#bfdbfe)'];
+
+            /* NAV scroll */
+            var nav = document.getElementById('mainNav');
+            window.addEventListener('scroll', function () { nav.classList.toggle('scrolled', scrollY > 10) }, { passive: true });
+
+            /* COUNTDOWN */
+            var cdsEl = document.getElementById('cds');
+            (cfg.countdowns || []).forEach(function (item, i) {
+                var b = document.createElement('div'); b.className = 'cd';
+                b.innerHTML = '<div class="cd-n" id="cdn' + i + '">--<span class="u">天</span></div>'
+                    + '<div class="cd-l"><strong>' + item.label + '</strong>' + item.date + '</div>';
+                cdsEl.appendChild(b);
+            });
+            function updCD() {
+                var now = new Date();
+                (cfg.countdowns || []).forEach(function (item, i) {
+                    var el = document.getElementById('cdn' + i); if (!el) return;
+                    var d = Math.ceil((new Date(item.date + 'T00:00:00') - now) / 86400000);
+                    el.innerHTML = d > 0 ? d + '<span class="u">天</span>' : d === 0 ? '今<span class="u">日</span>' : '已<span class="u">过</span>';
+                });
+            }
+            updCD(); setInterval(updCD, 60000);
+
+            /* FLOATING BUBBLES */
+            var bTexts = [
+                '一毕业即失业?', '毕业即进厂?', '传媒是坑吗?', '选错专业毁四年',
+                '土木还能报吗?', '冷门≠没出路', '同是985差十倍', '选城市or学校?',
+                '专业十年经验', '5万+成功案例', '一对一规划', '全程陪伴',
+                '2800+院校数据', '录取率提升40%', '新高考全解析', '赋分制专家',
+                '生化环材天坑?', '程序员还香吗?', '女生学什么好?', '如何不滑档?',
+                '冲稳保怎么配?', '志愿顺序有讲究', '填报截止日临近', '免费咨询开放中'
+            ];
+            var bwEl = document.getElementById('bubbleWrap');
+            var heroEl2 = document.querySelector('.hero');
+            var bubs = [];
+            var wxUrl = (cfg.floatBtn && cfg.floatBtn.url) ? cfg.floatBtn.url : '';
+            /* index-based analysis — avoids any encoding key mismatch */
+            var bAnalysisList = [
+                '\u9009\u9519\u4e13\u4e1a\u662f\u4e3b\u56e0\u4e4b\u4e00\u3002\u9ad8\u5ea6\u9971\u548c\u8d5b\u9053\uff08\u5982\u90e8\u5206\u6587\u79d1\u3001\u4f20\u7edf\u5236\u9020\uff09\u5e94\u5c4a\u751f\u7ade\u4e89\u6fc0\u70c8\uff0c\u5efa\u8bae\u7ed3\u5408\u884c\u4e1a\u5c31\u4e1a\u6570\u636e\u3001\u57ce\u5e02\u9700\u6c42\u4e0e\u4e2a\u4eba\u5174\u8da3\u7efc\u5408\u8bc4\u4f30\uff0c\u89c4\u907f\u9ad8\u98ce\u9669\u4e13\u4e1a\u3002',
+                '\u90e8\u5206\u5de5\u79d1\u4e13\u4e1a\uff08\u5982\u673a\u68b0\u3001\u5316\u5de5\uff09\u4f9b\u8fc7\u4e8e\u6c42\uff0c\u666e\u901a\u9662\u6821\u6bd5\u4e1a\u751f\u6d41\u5411\u5236\u9020\u4e1a\u6bd4\u4f8b\u8f83\u9ad8\u3002\u9009\u6821\u65f6\u91cd\u70b9\u53c2\u8003\u5c31\u4e1a\u7387\u548c\u6bd5\u4e1a\u751f\u5b9e\u9645\u85aa\u8d44\uff0c\u800c\u975e\u5355\u770b\u9662\u6821\u6392\u540d\u3002',
+                '\u4f20\u5a92\u884c\u4e1a\u5934\u90e8\u673a\u6784\u85aa\u8d44\u4e0d\u4f4e\uff0c\u4f46\u666e\u901a\u5c97\u4f4d\u7ade\u4e89\u6781\u4e3a\u6fc0\u70c8\u3002\u5efa\u8bae\u5177\u5907\u8f83\u5f3a\u5185\u5bb9\u521b\u4f5c\u6216\u6280\u672f\u80fd\u529b\u8005\u614e\u91cd\u8003\u8651\uff0c\u6cdb\u6cdb\u800c\u62a5\u98ce\u9669\u8f83\u9ad8\u3002',
+                '\u8f6c\u4e13\u4e1a\u6210\u672c\u9ad8\uff0c\u5927\u4e00\u7533\u8bf7\u673a\u4f1a\u6709\u9650\u3002\u7b2c\u4e00\u5fd7\u613f\u4e13\u4e1a\u51b3\u7b56\u52a1\u5fc5\u5ba1\u614e\uff0c\u7ed3\u5408\u804c\u4e1a\u6d4b\u8bc4\u3001\u884c\u4e1a\u8c03\u7814\u548c\u771f\u5b9e\u6848\u4f8b\u518d\u505a\u5224\u65ad\u3002',
+                '\u5efa\u7b51\u5730\u4ea7\u884c\u4e1a\u6574\u4f53\u627f\u538b\uff0c\u4f46\u57fa\u7840\u8bbe\u65bd\u548c\u8f68\u9053\u4ea4\u901a\u65b9\u5411\u4ecd\u6709\u9700\u6c42\u3002\u5efa\u8bae\u7ed3\u5408\u5bb6\u5ead\u7ecf\u6d4e\u80cc\u666f\u548c\u957f\u671f\u804c\u4e1a\u89c4\u5212\u7efc\u5408\u6743\u8861\u3002',
+                '\u8003\u53e4\u3001\u5c0f\u8bed\u79cd\u3001\u56fe\u4e66\u9986\u5b66\u7b49\u51b7\u95e8\u4e13\u4e1a\u7ade\u4e89\u5708\u5c0f\u4f46\u7a33\u5b9a\uff0c\u56fd\u5bb6\u653f\u7b56\u6276\u6301\u529b\u5ea6\u8f83\u5927\u3002\u5bf9\u53e3\u5c31\u4e1a\u8def\u5f84\u6e05\u6670\uff0c\u9002\u5408\u76ee\u6807\u660e\u786e\u7684\u8003\u751f\u3002',
+                '\u57ce\u5e02 > \u5e73\u53f0 > \u5b66\u5386\u3002\u5728\u4e00\u7ebf\u57ce\u5e02\u9876\u7ea7\u4f01\u4e1a\u79ef\u7d2f\u7684\u8d44\u6e90\u548c\u85aa\u8d44\uff0c\u5f80\u5f80\u8d85\u8fc7\u4e09\u56db\u7ebf\u57ce\u5e02\u540c\u7b49\u5b66\u5386\u3002\u9009\u4e13\u4e1a\u65f6\u4f18\u5148\u8003\u91cf\u5c31\u4e1a\u57ce\u5e02\u548c\u884c\u4e1a\u5929\u82b1\u677f\u3002',
+                '\u5efa\u8bae\u4f18\u5148\u9009\u57ce\u5e02\uff0c\u7279\u522b\u662f\u957f\u4e09\u89d2\u3001\u73e0\u4e09\u89d2\u6838\u5fc3\u57ce\u5e02\u3002\u5b9e\u4e60\u673a\u4f1a\u3001\u6821\u62db\u8d44\u6e90\u548c\u85aa\u8d44\u5929\u82b1\u677f\u5747\u663e\u8457\u4f18\u4e8e\u5185\u9646\u540c\u6863\u9662\u6821\u3002',
+                '\u5341\u5e74\u6df1\u8015\u5fd7\u613f\u586b\u62a5\uff0c\u670d\u52a1\u8986\u76d6\u5168\u56fd\u5404\u7701\u4efd\u3001\u5404\u5206\u6570\u6bb5\u3002\u79ef\u7d2f\u5927\u91cf\u771f\u5b9e\u5f55\u53d6\u6570\u636e\uff0c\u5e2e\u52a9\u8003\u751f\u5c11\u8d70\u5f2f\u8def\u3001\u7cbe\u51c6\u5339\u914d\u76ee\u6807\u9662\u6821\u3002',
+                '\u7d2f\u8ba1\u670d\u52a1\u8d855\u4e07\u540d\u8003\u751f\uff0c\u8986\u76d6\u4ece\u4e13\u79d1\u52309855\u5168\u5206\u6bb5\uff0c\u6210\u529f\u6848\u4f8b\u6db5\u76d6\u5404\u7701\u4efd\u548c\u4e3b\u8981\u9ad8\u6821\uff0c\u7ecf\u9a8c\u6c89\u6dc0\u4e30\u5bcc\u3002',
+                '\u7ed3\u5408\u4f60\u7684\u5206\u6570\u3001\u7701\u4efd\u3001\u9009\u79d1\u3001\u5174\u8da3\u504f\u597d\uff0c\u5236\u5b9a\u4e2a\u6027\u5316\u51b2\u7a33\u4fdd\u5fd7\u613f\u65b9\u6848\uff0c\u4ece\u9662\u6821\u7b5b\u9009\u5230\u586b\u62a5\u987a\u5e8f\u5168\u7a0b\u964d\u540c\u3002',
+                '\u4ece\u9009\u4e13\u4e1a\u548b\u8be2\u3001\u51fa\u5206\u5206\u6790\u3001\u586b\u62a5\u64cd\u4f5c\uff0c\u5230\u5f55\u53d6\u7ed3\u679c\u8ddf\u8fdb\uff0c\u6bcf\u4e00\u4e2a\u5173\u952e\u8282\u70b9\u90fd\u6709\u4e13\u4e1a\u8001\u5e08\u5b9e\u65f6\u8ddf\u8fdb\u89e3\u7b54\u3002',
+                '\u6536\u5f5552800+\u672c\u4e13\u79d1\u9662\u6821\u7684\u5386\u5e74\u5f55\u53d6\u6570\u636e\uff0c\u652f\u6301\u6309\u7701\u4efd\u3001\u5206\u6570\u3001\u4e13\u4e1a\u591a\u7ef4\u5ea6\u7b5b\u9009\uff0c\u52a9\u529b\u7cbe\u51c6\u5b9a\u4f4d\u76ee\u6807\u9662\u6821\u3002',
+                '\u79d1\u5b66\u8bbe\u7f6e\u51b2\u7a33\u4fdd\u68af\u5ea6\uff0c\u5408\u7406\u5229\u7528\u670d\u4ece\u8c03\u5242\u653f\u7b56\uff0c\u591a\u5c4a\u670d\u52a1\u6570\u636e\u663e\u793a\u6574\u4f53\u5f55\u53d6\u6210\u529f\u7387\u63d0\u5347\u663e\u8457\u3002',
+                '3+1+2\u9009\u79d1\u6a21\u5f0f\u3001\u8d4b\u5206\u5236\u8ba1\u7b97\u903b\u8f91\u3001\u4e13\u4e1a\u9009\u8003\u8981\u6c42\uff0c\u4e09\u5927\u6838\u5fc3\u6a21\u5757\u5168\u9762\u89e3\u8bfb\uff0c\u5e2e\u52a9\u65b0\u9ad8\u8003\u8003\u751f\u5c11\u8d70\u5f2f\u8def\u3002',
+                '\u6df1\u5ea6\u7406\u89e3\u8d4b\u5206\u673a\u5236\u5bf9\u4e0d\u540c\u79d1\u76ee\u5206\u6570\u7684\u5f71\u54cd\uff0c\u5e2e\u52a9\u4f60\u5728\u9009\u79d1\u65f6\u6700\u5927\u5316\u7ade\u4e89\u4f18\u52bf\uff0c\u907f\u514d\u56e0\u8d4b\u5206\u4e8f\u635f\u9020\u6210\u5206\u6570\u6d6a\u8d39\u3002',
+                '\u56db\u5927\u5929\u5751\u672c\u79d1\u5c31\u4e1a\u786e\u5b9e\u504f\u96be\uff0c\u4f46\u8bfb\u7814\u540e\u65b9\u5411\u663e\u8457\u6539\u5584\u3002\u5efa\u8bae\u660e\u786e\u81ea\u5df1\u662f\u5426\u6709\u7ee7\u7eed\u6df1\u9020\u610f\u613f\uff0c\u518d\u51b3\u5b9a\u662f\u5426\u62a5\u8003\u3002',
+                '\u4e92\u8054\u7f51\u5927\u5382\u964d\u6e29\uff0c\u4f46\u4e91\u8ba1\u7b97\u3001AI\u5de5\u7a0b\u3001\u7f51\u7edc\u5b89\u5168\u7b49\u7ec6\u5206\u8d5b\u9053\u4ecd\u4f9b\u4e0d\u5e94\u6c42\u3002\u5173\u952e\u5728\u4e8e\u9009\u5bf9\u65b9\u5411\uff0c\u800c\u975e\u4e00\u6982\u800c\u8bba\u3002',
+                '\u62a4\u7406\u3001\u5e08\u8303\u3001\u4f1a\u8ba1\u3001\u5fc3\u7406\u5b66\u3001\u53e3\u8154\u533b\u5b66\u7b49\u4e13\u4e1a\u5c31\u4e1a\u7a33\u5b9a\u3001\u85aa\u8d44\u5408\u7406\uff0c\u9002\u5408\u4e0d\u540c\u6027\u683c\u7279\u70b9\u7684\u5973\u751f\uff0c\u53ef\u7ed3\u5408\u4e2a\u4eba\u610f\u5411\u7ec6\u5316\u9009\u62e9\u3002',
+                '\u8bbe\u7f6e\u5408\u7406\u68af\u5ea6\uff08\u7b2c\u4e00\u5fd7\u613f\u51b2\u3001\u7b2c\u4e8c\u5fd7\u613f\u7a33\u3001\u540e\u7eed\u5fd7\u613f\u4fdd\uff09\uff0c\u670d\u4ece\u8c03\u5242\u662f\u5e95\u7ebf\u4fdd\u969c\u3002\u5efa\u8bae\u53c2\u8003\u8fd1\u4e09\u5e74\u5f55\u53d6\u6570\u636e\u79d1\u5b66\u5e03\u5c40\u3002',
+                '\u901a\u5e38\u5efa\u8bae\uff1a\u5f55\u53d6\u6982\u7387<50%\u4e3a\u51b2\u300150%-80%\u4e3a\u7a33\u300180%\u4ee5\u4e0a\u4e3a\u4fdd\u3002\u5fd7\u613f\u6570\u91cf\u5145\u8db3\u65f6\uff0c\u6bcf\u6863\u81f3\u5c11\u5e03\u5c402-3\u6240\u9662\u6821\u3002',
+                '\u5e73\u884c\u5fd7\u613f\u9075\u5faa\u201c\u5206\u6570\u4f18\u5148\uff0c\u9075\u5faa\u5fd7\u613f\u201d\u539f\u5219\uff0c\u586b\u62a5\u987a\u5e8f\u76f4\u63a5\u5f71\u54cd\u6295\u6863\u7ed3\u679c\u3002\u559c\u6b22\u7684\u9662\u6821\u52a1\u5fc5\u9760\u524d\u586b\u5199\uff0c\u4e0d\u8981\u968f\u610f\u8c03\u6362\u4f4d\u7f6e\u3002',
+                '\u9519\u8fc7\u586b\u62a5\u7a97\u53e3\u53ea\u80fd\u53c2\u4e0e\u5f81\u96c6\u5fd7\u613f\uff0c\u9662\u6821\u548c\u4e13\u4e1a\u9009\u62e9\u7a7a\u95f4\u5927\u5e45\u7f29\u51cf\u3002\u5efa\u8bae\u51fa\u5206\u540948\u5c0f\u65f6\u5185\u5b8c\u6210\u521d\u6b65\u65b9\u6848\uff0c\u9884\u7559\u4fee\u6539\u65f6\u95f4\u3002',
+                '\u73b0\u5728\u8054\u7cfb\u4e13\u5bb6\uff0c\u53ef\u4eab\u514d\u8d39\u521d\u6b65\u8bc4\u4f30\uff1a\u6839\u636e\u4f60\u7684\u5206\u6570\u548c\u7701\u4efd\uff0c\u5feb\u901f\u7ed9\u51fa\u53ef\u62a5\u9662\u6821\u8303\u56f4\u548c\u4e13\u4e1a\u5efa\u8bae\uff0c\u5e2e\u4f60\u7406\u6e05\u601d\u8def\u3002'
+            ];
+            bTexts.forEach(function (txt, i) {
+                var el = document.createElement('div');
+                el.className = 'hb hb-' + (i % 8);
+                el.textContent = txt;
+                el.style.cursor = 'pointer';
+                (function (idx, bubTxt) {
+                    el.addEventListener('click', function () {
+                        var analysis = bAnalysisList[idx] || '';
+                        document.getElementById('bubblePopTitle').textContent = bubTxt;
+                        document.getElementById('bubblePopAnalysis').textContent = analysis;
+                        var cta = document.getElementById('bubblePopCta');
+                        if (wxUrl) { cta.href = wxUrl; cta.style.display = ''; }
+                        else { cta.href = '#'; cta.style.display = 'none'; }
+                        var popup = document.getElementById('bubblePopup');
+                        var box = document.getElementById('bubblePopBox');
+                        box.style.animation = 'none';
+                        popup.classList.add('on');
+                        box.offsetHeight; /* force reflow */
+                        box.style.animation = '';
+                    });
+                }(i, txt));
+                bwEl.appendChild(el);
+                bubs.push({ el: el, x: 0, y: 0, vx: 0, vy: 0, w: 0, h: 0, zone: i % 2 === 0 ? 'L' : 'R', zx1: 0, zx2: 0, paused: false });
+            });
+            var MAX_SPD = 0.28;
+            function calcZone(b, W) {
+                var zw = W * 0.29;
+                if (b.zone === 'L') { b.zx1 = 0; b.zx2 = zw; }
+                else { b.zx1 = W - zw; b.zx2 = W; }
+            }
+            function initBubs() {
+                var W = heroEl2.offsetWidth, H = heroEl2.offsetHeight;
+                bubs.forEach(function (b) {
+                    b.w = b.el.offsetWidth; b.h = b.el.offsetHeight;
+                    calcZone(b, W);
+                    b.x = b.zx1 + Math.random() * Math.max(10, b.zx2 - b.zx1 - b.w);
+                    b.y = 20 + Math.random() * (H - b.h - 40);
+                    var spd = 0.10 + Math.random() * 0.14;
+                    var ang = Math.random() * Math.PI * 2;
+                    b.vx = Math.cos(ang) * spd;
+                    b.vy = Math.sin(ang) * spd;
+                    b.el.style.opacity = '1';
+                    b.el.style.transform = 'translate(' + b.x + 'px,' + b.y + 'px)';
+                });
+            }
+            setTimeout(initBubs, 80);
+            function animBubs() {
+                var W = heroEl2.offsetWidth, H = heroEl2.offsetHeight;
+                bubs.forEach(function (b) {
+                    calcZone(b, W);
+                    var hovered = b.el.matches(':hover');
+                    if (!hovered) {
+                        b.x += b.vx; b.y += b.vy;
+                        if (b.x < b.zx1) { b.x = b.zx1; b.vx = Math.abs(b.vx); }
+                        if (b.x + b.w > b.zx2) { b.x = b.zx2 - b.w; b.vx = -Math.abs(b.vx); }
+                        if (b.y < 0) { b.y = 0; b.vy = Math.abs(b.vy); }
+                        if (b.y + b.h > H) { b.y = H - b.h; b.vy = -Math.abs(b.vy); }
+                    }
+                    var sc = hovered ? ' scale(1.12)' : '';
+                    b.el.style.transform = 'translate(' + b.x + 'px,' + b.y + 'px)' + sc;
+                });
+                for (var i = 0; i < bubs.length; i++) {
+                    for (var j = i + 1; j < bubs.length; j++) {
+                        var a = bubs[i], bb = bubs[j];
+                        if (a.el.matches(':hover') || bb.el.matches(':hover')) continue;
+                        if (a.zone !== bb.zone) continue;
+                        var cx1 = a.x + a.w / 2, cy1 = a.y + a.h / 2;
+                        var cx2 = bb.x + bb.w / 2, cy2 = bb.y + bb.h / 2;
+                        var dx = cx2 - cx1, dy = cy2 - cy1;
+                        var dist = Math.sqrt(dx * dx + dy * dy);
+                        var minD = (a.w + bb.w) * 0.40;
+                        if (dist < minD && dist > 0.1) {
+                            var nx = dx / dist, ny = dy / dist;
+                            var rvx = a.vx - bb.vx, rvy = a.vy - bb.vy;
+                            var dot = rvx * nx + rvy * ny;
+                            if (dot > 0) {
+                                a.vx -= dot * nx; a.vy -= dot * ny;
+                                bb.vx += dot * nx; bb.vy += dot * ny;
+                                [a, bb].forEach(function (p) {
+                                    var s = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+                                    if (s > MAX_SPD) { p.vx = p.vx / s * MAX_SPD; p.vy = p.vy / s * MAX_SPD; }
+                                });
+                            }
+                        }
+                    }
+                }
+                requestAnimationFrame(animBubs);
+            }
+            animBubs();
+
+            /* QUICK LINKS */
+            var qg = document.getElementById('qlGrid');
+            (cfg.quickLinks || []).forEach(function (item) {
+                var a = document.createElement('a'); a.className = 'ql-card fu';
+                a.href = item.url || '#';
+                if (item.url) { a.target = '_blank'; a.rel = 'noopener' }
+                a.innerHTML = '<div class="ql-icon">' + item.emoji + '</div>'
+                    + '<div class="ql-t">' + item.title + '</div>'
+                    + '<div class="ql-d">' + item.desc + '</div>';
+                qg.appendChild(a);
+            });
+
+            /* CAROUSEL */
+            var track = document.getElementById('carTr');
+            var dotsEl = document.getElementById('carDots');
+            var carEl = document.getElementById('carousel');
+            var cur = 0, timer;
+            carEl.style.aspectRatio = cfg.carouselAspect || '16/6';
+            carEl.style.maxHeight = '420px';
+            (cfg.carousel || []).forEach(function (item, i) {
+                var slide = document.createElement('div'); slide.className = 'car-slide';
+                if (item.link) slide.addEventListener('click', function () { window.open(item.link, '_blank', 'noopener') });
+                var img = document.createElement('img'); img.alt = item.alt || '广告位' + (i + 1); img.src = item.src;
+                img.onerror = function () {
+                    this.remove();
+                    var ph = document.createElement('div'); ph.className = 'car-ph';
+                    ph.style.background = item.color || BP[i % BP.length];
+                    ph.innerHTML = '<div class="cpm">' + (item.alt || '横幅广告位' + (i + 1)) + '</div><div class="cps">将图片放入 images/carousel/ 后配置路径</div>';
+                    slide.appendChild(ph);
+                };
+                slide.appendChild(img); track.appendChild(slide);
+                var dot = document.createElement('button'); dot.className = 'car-dot' + (i === 0 ? ' on' : '');
+                dot.addEventListener('click', function () { clr(); go(i); run() }); dotsEl.appendChild(dot);
+            });
+            function go(n) {
+                cur = ((n % track.children.length) + track.children.length) % track.children.length;
+                track.style.transform = 'translateX(-' + cur * 100 + '%)';
+                [].forEach.call(dotsEl.children, function (d) { d.classList.remove('on') });
+                dotsEl.children[cur].classList.add('on');
+            }
+            function run() { timer = setInterval(function () { go(cur + 1) }, cfg.carouselInterval || 5000) }
+            function clr() { clearInterval(timer) }
+            document.getElementById('prevBtn').addEventListener('click', function () { clr(); go(cur - 1); run() });
+            document.getElementById('nextBtn').addEventListener('click', function () { clr(); go(cur + 1); run() });
+            var sx = 0;
+            carEl.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX }, { passive: true });
+            carEl.addEventListener('touchend', function (e) { var dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) { clr(); go(cur + (dx < 0 ? 1 : -1)); run() } }, { passive: true });
+            run();
+
+            /* AD ROW */
+            var ag = document.getElementById('adGrid');
+            (cfg.ads || []).forEach(function (item, i) {
+                var card = document.createElement(item.link ? 'a' : 'div'); card.className = 'ad-card';
+                if (item.link) { card.href = item.link; card.target = '_blank'; card.rel = 'noopener'; }
+                var img = document.createElement('img'); img.alt = item.title || '广告' + (i + 1); img.loading = 'lazy'; img.src = item.src;
+                img.onerror = function () {
+                    this.remove();
+                    var ph = document.createElement('div'); ph.className = 'ad-ph';
+                    ph.style.background = item.color || AP[i % AP.length];
+                    ph.innerHTML = '<div class="apm">' + (item.title || '广告位' + (i + 1)) + '</div><div class="aps">放入 images/ads/ 后配置路径</div>';
+                    card.insertBefore(ph, card.firstChild);
+                };
+                card.appendChild(img);
+                if (item.title) {
+                    var inf = document.createElement('div'); inf.className = 'ad-info';
+                    var t = document.createElement('div'); t.className = 'ad-ttl'; t.textContent = item.title;
+                    inf.appendChild(t); card.appendChild(inf);
+                }
+                ag.appendChild(card);
+            });
+
+            /* PROVINCE */
+            var pg = document.getElementById('provGrid');
+            (cfg.provinces || []).forEach(function (p) {
+                var a = document.createElement('a'); a.className = 'prov-btn';
+                a.textContent = p.name;
+                a.href = p.url || 'https://gaokao.chsi.com.cn/'; a.target = '_blank'; a.rel = 'noopener';
+                pg.appendChild(a);
+            });
+
+            /* FLOAT */
+            var fb = cfg.floatBtn;
+            if (fb && fb.show) {
+                var fw = document.getElementById('floatW'); fw.style.display = 'flex';
+                document.getElementById('floatLbl').textContent = fb.text || '立即咨询';
+                document.getElementById('floatBtn').addEventListener('click', function () { if (fb.url) window.open(fb.url, '_blank', 'noopener') });
+            }
+
+            /* SCROLL FADE */
+            var fels = document.querySelectorAll('.fu');
+            if ('IntersectionObserver' in window) {
+                var obs = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target) } });
+                }, { threshold: .07 });
+                fels.forEach(function (el) { obs.observe(el) });
+            } else {
+                fels.forEach(function (el) { el.classList.add('on') });
+            }
+            /* ===== ADMIN PANEL ===== */
+            (function () {
+                /* --- localStorage merge (already done above, but also apply on fresh load) --- */
+                var STORE_KEY = 'gaokao_admin_cfg';
+
+                /* --- secret trigger: click 🎓 4+ times within 1.8s --- */
+                var trig = document.getElementById('admTrigger');
+                var clickQ = 0, clickT;
+                trig.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    clickQ++;
+                    clearTimeout(clickT);
+                    clickT = setTimeout(function () { clickQ = 0; }, 1800);
+                    if (clickQ >= 4) { clickQ = 0; openAdm(); }
+                });
+
+                /* --- secret footer trigger: click bottom-left 5+ times within 2s --- */
+                var footTrig = document.getElementById('admFooterTrigger');
+                var fClickQ = 0, fClickT;
+                footTrig.addEventListener('click', function () {
+                    fClickQ++;
+                    clearTimeout(fClickT);
+                    fClickT = setTimeout(function () { fClickQ = 0; }, 2000);
+                    if (fClickQ >= 5) { fClickQ = 0; openAdm(); }
+                });
+
+                function openAdm() {
+                    document.getElementById('admOverlay').classList.add('on');
+                    document.getElementById('admLogin').style.display = '';
+                    document.getElementById('admDash').style.display = 'none';
+                    document.getElementById('admUser').value = '';
+                    document.getElementById('admPass').value = '';
+                    document.getElementById('admErr').textContent = '';
+                }
+                function closeAdm() { document.getElementById('admOverlay').classList.remove('on'); }
+
+                /* === background cloud sync (JSONbin) === */
+                (function () {
+                    var cs = cfg.cloudStorage || {};
+                    if (!cs.jsonbinId || !cs.jsonbinKey) return;
+                    var SYNC_KEY = '_gk_sync_ts';
+                    var last = parseInt(localStorage.getItem(SYNC_KEY) || '0');
+                    if (Date.now() - last < 20000) return; /* throttle: once per 20s */
+                    fetch('https://api.jsonbin.io/v3/b/' + cs.jsonbinId + '/latest', {
+                        headers: { 'X-Master-Key': cs.jsonbinKey, 'X-Bin-Meta': 'false' }
+                    }).then(function (r) { return r.json(); })
+                        .then(function (data) {
+                            if (!data || typeof data !== 'object') return;
+                            var current = localStorage.getItem(STORE_KEY);
+                            var incoming = JSON.stringify(data);
+                            if (current !== incoming) {
+                                localStorage.setItem(STORE_KEY, incoming);
+                                localStorage.setItem(SYNC_KEY, String(Date.now()));
+                                location.reload();
+                            }
+                        }).catch(function () { });
+                }());
+
+                /* defer all admin DOM bindings until after HTML is parsed */
+                setTimeout(function () {
+                    /* --- login --- */
+                    function doLogin() {
+                        var u = document.getElementById('admUser').value.trim();
+                        var p = document.getElementById('admPass').value;
+                        var ac = (cfg.admin) || { user: 'admin', pass: 'gaokao2026' };
+                        if (u === ac.user && p === ac.pass) {
+                            document.getElementById('admLogin').style.display = 'none';
+                            document.getElementById('admDash').style.display = 'flex';
+                            loadDash();
+                        } else {
+                            document.getElementById('admErr').textContent = '账号或密码错误';
+                        }
+                    }
+                    /* close on overlay click */
+                    document.getElementById('admOverlay').addEventListener('click', function (e) {
+                        if (e.target === this) closeAdm();
+                    });
+                    document.getElementById('admLoginBtn').addEventListener('click', doLogin);
+                    document.getElementById('admPass').addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+                    document.getElementById('admLogout').addEventListener('click', function () {
+                        document.getElementById('admDash').style.display = 'none';
+                        document.getElementById('admLogin').style.display = '';
+                    });
+
+                    /* --- tabs --- */
+                    document.querySelectorAll('.adm-tab').forEach(function (btn) {
+                        btn.addEventListener('click', function () {
+                            document.querySelectorAll('.adm-tab').forEach(function (b) { b.classList.remove('on'); });
+                            document.querySelectorAll('.adm-pane').forEach(function (p) { p.classList.remove('on'); });
+                            btn.classList.add('on');
+                            document.getElementById('adm-' + btn.dataset.tab).classList.add('on');
+                        });
+                    });
+
+                    /* --- load dashboard data --- */
+                    function loadDash() {
+                        /* 公告 */
+                        document.getElementById('admAnnTA').value = (cfg.announcements || []).join('\n');
+
+                        /* 快捷入口 */
+                        renderQL();
+
+                        /* 悬浮按钮 */
+                        var fb = cfg.floatBtn || {};
+                        document.getElementById('admFloatUrl').value = fb.url || '';
+                        document.getElementById('admFloatText').value = fb.text || '立即咨询';
+                        document.getElementById('admFloatShow').value = fb.show ? '1' : '0';
+
+                        /* 倒计时 */
+                        renderCD();
+
+                        /* 广告 */
+                        renderCar();
+                        renderAds();
+
+                        /* 云配置 */
+                        var cs = cfg.cloudStorage || {};
+                        document.getElementById('admCloudJbKey').value = cs.jsonbinKey || '';
+                        document.getElementById('admCloudJbId').value = cs.jsonbinId || '';
+                        document.getElementById('admCloudCldName').value = cs.cloudinaryName || '';
+                        document.getElementById('admCloudCldPreset').value = cs.cloudinaryPreset || '';
+                    }
+
+                    /* === helper: toast notification === */
+                    function showToast(msg) {
+                        var t = document.getElementById('admCloudToast');
+                        if (!t) {
+                            t = document.createElement('div');
+                            t.id = 'admCloudToast';
+                            t.className = 'adm-cloud-toast';
+                            document.body.appendChild(t);
+                        }
+                        t.textContent = msg;
+                        t.classList.add('show');
+                        clearTimeout(t._tid);
+                        t._tid = setTimeout(function () { t.classList.remove('show'); }, 2800);
+                    }
+
+                    /* === helper: fallback base64 when no imgbb key === */
+                    function fallbackBase64(file, srcInput, thumbImg, thumbIcon) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            srcInput.value = e.target.result;
+                            thumbImg.src = e.target.result;
+                            thumbImg.style.display = 'block';
+                            if (thumbIcon) thumbIcon.style.display = 'none';
+                            showToast('⚠️ 图片已转为本地预览（仅本设备可见）。填入 imgbb Key 后可上传至云端');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+
+                    /* === helper: build image upload row === */
+                    function makeMediaRow(item, altField, onDelete) {
+                        var row = document.createElement('div');
+                        row.className = 'adm-media-row';
+
+                        /* thumb */
+                        var thumb = document.createElement('div');
+                        thumb.className = 'adm-thumb-wrap';
+                        var tImg = document.createElement('img');
+                        var tIcon = document.createElement('span');
+                        tIcon.className = 'adm-thumb-icon'; tIcon.textContent = '🖼';
+                        if (item.src) { tImg.src = item.src; tImg.style.display = 'block'; tIcon.style.display = 'none'; }
+                        thumb.appendChild(tImg); thumb.appendChild(tIcon);
+
+                        /* src input */
+                        var srcIn = document.createElement('input');
+                        srcIn.setAttribute('data-f', 'src');
+                        srcIn.value = item.src || '';
+                        srcIn.placeholder = 'https:// 网络图片地址';
+                        srcIn.addEventListener('input', function () {
+                            if (srcIn.value) { tImg.src = srcIn.value; tImg.style.display = 'block'; tIcon.style.display = 'none'; }
+                            else { tImg.style.display = 'none'; tIcon.style.display = ''; }
+                        });
+
+                        /* upload button */
+                        var upBtn = document.createElement('button');
+                        upBtn.className = 'adm-upload-btn'; upBtn.type = 'button';
+                        upBtn.innerHTML = '📷 上传';
+                        var fi = document.createElement('input');
+                        fi.type = 'file'; fi.accept = 'image/*'; fi.style.display = 'none';
+                        document.body.appendChild(fi);
+                        upBtn.addEventListener('click', function () { fi.click(); });
+                        thumb.addEventListener('click', function () { fi.click(); });
+                        fi.addEventListener('change', function () {
+                            var file = fi.files[0]; if (!file) return;
+                            var cs = cfg.cloudStorage || {};
+                            if (cs.cloudinaryName && cs.cloudinaryPreset) {
+                                upBtn.classList.add('loading'); upBtn.textContent = '上传中…';
+                                var fd = new FormData();
+                                fd.append('file', file);
+                                fd.append('upload_preset', cs.cloudinaryPreset);
+                                fetch('https://api.cloudinary.com/v1_1/' + cs.cloudinaryName + '/image/upload', { method: 'POST', body: fd })
+                                    .then(function (r) { return r.json(); })
+                                    .then(function (d) {
+                                        if (d.secure_url) {
+                                            srcIn.value = d.secure_url;
+                                            tImg.src = d.secure_url; tImg.style.display = 'block'; tIcon.style.display = 'none';
+                                            showToast('✅ 图片已上传至 Cloudinary，保存后所有用户可见');
+                                        } else { fallbackBase64(file, srcIn, tImg, tIcon); }
+                                    })
+                                    .catch(function () { fallbackBase64(file, srcIn, tImg, tIcon); })
+                                    .finally(function () { upBtn.classList.remove('loading'); upBtn.innerHTML = '📷 上传'; fi.value = ''; });
+                            } else { fallbackBase64(file, srcIn, tImg, tIcon); fi.value = ''; }
+                        });
+
+                        /* alt/title input */
+                        var altIn = document.createElement('input');
+                        altIn.setAttribute('data-f', altField);
+                        altIn.value = (item[altField] || '');
+                        altIn.placeholder = altField === 'alt' ? '图片说明' : '标题';
+
+                        /* link input */
+                        var lnkIn = document.createElement('input');
+                        lnkIn.setAttribute('data-f', 'link');
+                        lnkIn.value = item.link || '';
+                        lnkIn.placeholder = 'https://';
+
+                        /* delete button */
+                        var delBtn = document.createElement('button');
+                        delBtn.className = 'adm-del'; delBtn.textContent = '×';
+                        delBtn.addEventListener('click', function () {
+                            try { document.body.removeChild(fi); } catch (e) { }
+                            onDelete();
+                        });
+
+                        row.appendChild(thumb);
+                        row.appendChild(srcIn);
+                        row.appendChild(upBtn);
+                        row.appendChild(altIn);
+                        row.appendChild(lnkIn);
+                        row.appendChild(delBtn);
+                        return row;
+                    }
+
+                    /* --- quicklinks --- */
+                    function renderQL() {
+                        var list = document.getElementById('admQlList');
+                        list.innerHTML = '<div class="adm-col-hd"><span>图标</span><span>标题</span><span>简介</span><span>链接URL</span><span></span></div>';
+                        (cfg.quickLinks || []).forEach(function (q, i) {
+                            var row = document.createElement('div');
+                            row.className = 'adm-ql-row';
+                            row.innerHTML =
+                                '<input data-f="emoji" value="' + esc(q.emoji) + '" placeholder="🎯">' +
+                                '<input data-f="title" value="' + esc(q.title) + '" placeholder="标题">' +
+                                '<input data-f="desc"  value="' + esc(q.desc) + '" placeholder="简介">' +
+                                '<input data-f="url"   value="' + esc(q.url) + '" placeholder="https://">' +
+                                '<button class="adm-del" data-i="' + i + '">×</button>';
+                            row.querySelector('.adm-del').addEventListener('click', function () {
+                                cfg.quickLinks.splice(i, 1); renderQL();
+                            });
+                            list.appendChild(row);
+                        });
+                    }
+                    document.getElementById('admQlAdd').addEventListener('click', function () {
+                        cfg.quickLinks = cfg.quickLinks || [];
+                        cfg.quickLinks.push({ emoji: '🔗', title: '新入口', desc: '', url: '' });
+                        renderQL();
+                    });
+
+                    /* --- countdowns --- */
+                    function renderCD() {
+                        var list = document.getElementById('admCdList');
+                        list.innerHTML = '<div class="adm-col-hd" style="grid-template-columns:1fr 1fr 32px"><span>标签</span><span>日期 YYYY-MM-DD</span><span></span></div>';
+                        (cfg.countdowns || []).forEach(function (cd, i) {
+                            var row = document.createElement('div');
+                            row.className = 'adm-cd-row';
+                            row.innerHTML =
+                                '<input data-f="label" value="' + esc(cd.label) + '" placeholder="标签">' +
+                                '<input data-f="date"  value="' + esc(cd.date) + '" placeholder="2026-06-07">' +
+                                '<button class="adm-del" data-i="' + i + '">×</button>';
+                            row.querySelector('.adm-del').addEventListener('click', function () {
+                                cfg.countdowns.splice(i, 1); renderCD();
+                            });
+                            list.appendChild(row);
+                        });
+                    }
+                    document.getElementById('admCdAdd').addEventListener('click', function () {
+                        cfg.countdowns = cfg.countdowns || [];
+                        cfg.countdowns.push({ label: '新倒计时', date: '2026-06-07' });
+                        renderCD();
+                    });
+
+                    /* --- carousel --- */
+                    function renderCar() {
+                        var list = document.getElementById('admCarList');
+                        list.querySelectorAll('input[type=file]').forEach(function (f) { try { document.body.removeChild(f); } catch (e) { } });
+                        list.innerHTML = '<div style="display:grid;grid-template-columns:64px 1.4fr 72px 0.65fr 1fr 32px;gap:6px;margin-bottom:4px"><span style="font-size:.7rem;color:#94a3b8;font-weight:700">预览</span><span style="font-size:.7rem;color:#94a3b8;font-weight:700">图片 URL（或点预览上传）</span><span></span><span style="font-size:.7rem;color:#94a3b8;font-weight:700">说明</span><span style="font-size:.7rem;color:#94a3b8;font-weight:700">跳转链接</span><span></span></div>';
+                        (cfg.carousel || []).forEach(function (item, i) {
+                            var row = makeMediaRow(item, 'alt', function () { cfg.carousel.splice(i, 1); renderCar(); });
+                            row.classList.add('adm-car-row');
+                            list.appendChild(row);
+                        });
+                    }
+                    document.getElementById('admCarAdd').addEventListener('click', function () {
+                        cfg.carousel = cfg.carousel || [];
+                        cfg.carousel.push({ src: '', alt: '广告位', link: '', color: 'linear-gradient(135deg,#e8eaf6,#c5cae9)' });
+                        renderCar();
+                    });
+
+                    /* --- ads --- */
+                    function renderAds() {
+                        var list = document.getElementById('admAdList');
+                        list.querySelectorAll('input[type=file]').forEach(function (f) { try { document.body.removeChild(f); } catch (e) { } });
+                        list.innerHTML = '<div style="display:grid;grid-template-columns:64px 1.4fr 72px 0.65fr 1fr 32px;gap:6px;margin-bottom:4px"><span style="font-size:.7rem;color:#94a3b8;font-weight:700">预览</span><span style="font-size:.7rem;color:#94a3b8;font-weight:700">图片 URL（或点预览上传）</span><span></span><span style="font-size:.7rem;color:#94a3b8;font-weight:700">标题</span><span style="font-size:.7rem;color:#94a3b8;font-weight:700">跳转链接</span><span></span></div>';
+                        (cfg.ads || []).forEach(function (item, i) {
+                            var row = makeMediaRow(item, 'title', function () { cfg.ads.splice(i, 1); renderAds(); });
+                            row.classList.add('adm-ad-row');
+                            list.appendChild(row);
+                        });
+                    }
+                    document.getElementById('admAdAdd').addEventListener('click', function () {
+                        cfg.ads = cfg.ads || [];
+                        cfg.ads.push({ src: '', title: '推广广告位', link: '', color: 'linear-gradient(135deg,#ede9ff,#ddd6fe)' });
+                        renderAds();
+                    });
+
+                    /* --- save --- */
+                    document.getElementById('admSave').addEventListener('click', function () {
+                        /* 公告 */
+                        cfg.announcements = document.getElementById('admAnnTA').value
+                            .split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+
+                        /* 快捷入口 */
+                        var qlRows = document.querySelectorAll('#admQlList .adm-ql-row');
+                        cfg.quickLinks = [];
+                        qlRows.forEach(function (row) {
+                            cfg.quickLinks.push({
+                                emoji: row.querySelector('[data-f=emoji]').value,
+                                title: row.querySelector('[data-f=title]').value,
+                                desc: row.querySelector('[data-f=desc]').value,
+                                url: row.querySelector('[data-f=url]').value
+                            });
+                        });
+
+                        /* 悬浮按钮 */
+                        cfg.floatBtn = {
+                            url: document.getElementById('admFloatUrl').value.trim(),
+                            text: document.getElementById('admFloatText').value.trim() || '立即咨询',
+                            show: document.getElementById('admFloatShow').value === '1'
+                        };
+
+                        /* 倒计时 */
+                        var cdRows = document.querySelectorAll('#admCdList .adm-cd-row');
+                        cfg.countdowns = [];
+                        cdRows.forEach(function (row) {
+                            cfg.countdowns.push({
+                                label: row.querySelector('[data-f=label]').value,
+                                date: row.querySelector('[data-f=date]').value
+                            });
+                        });
+
+                        /* 轮播图 */
+                        var carRows = document.querySelectorAll('#admCarList .adm-car-row');
+                        cfg.carousel = [];
+                        carRows.forEach(function (row) {
+                            cfg.carousel.push({
+                                src: row.querySelector('[data-f=src]').value,
+                                alt: row.querySelector('[data-f=alt]').value,
+                                link: row.querySelector('[data-f=link]').value,
+                                color: 'linear-gradient(135deg,#e8eaf6,#c5cae9)'
+                            });
+                        });
+
+                        /* 广告位 */
+                        var adsRows = document.querySelectorAll('#admAdList .adm-ad-row');
+                        cfg.ads = [];
+                        adsRows.forEach(function (row) {
+                            cfg.ads.push({
+                                src: row.querySelector('[data-f=src]').value,
+                                title: row.querySelector('[data-f=title]').value,
+                                link: row.querySelector('[data-f=link]').value,
+                                color: 'linear-gradient(135deg,#ede9ff,#ddd6fe)'
+                            });
+                        });
+
+                        /* 云配置 Keys */
+                        var jbKey = document.getElementById('admCloudJbKey').value.trim();
+                        var jbId = document.getElementById('admCloudJbId').value.trim();
+                        var cldName = document.getElementById('admCloudCldName').value.trim();
+                        var cldPreset = document.getElementById('admCloudCldPreset').value.trim();
+                        cfg.cloudStorage = { jsonbinKey: jbKey, jsonbinId: jbId, cloudinaryName: cldName, cloudinaryPreset: cldPreset };
+
+                        /* 写入 localStorage */
+                        var save = {
+                            announcements: cfg.announcements,
+                            quickLinks: cfg.quickLinks,
+                            floatBtn: cfg.floatBtn,
+                            countdowns: cfg.countdowns,
+                            carousel: cfg.carousel,
+                            ads: cfg.ads,
+                            cloudStorage: cfg.cloudStorage
+                        };
+                        localStorage.setItem(STORE_KEY, JSON.stringify(save));
+
+                        /* 同步到 JSONbin 云端 */
+                        if (jbId && jbKey) {
+                            var saveBtn = document.getElementById('admSave');
+                            saveBtn.textContent = '☁️ 同步中…';
+                            saveBtn.disabled = true;
+                            fetch('https://api.jsonbin.io/v3/b/' + jbId, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json', 'X-Master-Key': jbKey },
+                                body: JSON.stringify(save)
+                            }).then(function () {
+                                showToast('✅ 已保存并同步至云端，所有用户刷新即见');
+                            }).catch(function () {
+                                showToast('⚠️ 本地已保存，云端同步失败，请检查 JSONbin 配置');
+                            }).finally(function () {
+                                saveBtn.textContent = '💾 保存并刷新生效';
+                                saveBtn.disabled = false;
+                                closeAdm();
+                                location.reload();
+                            });
+                        } else {
+                            closeAdm();
+                            location.reload();
+                        }
+                    });
+
+                    /* --- reset --- */
+                    document.getElementById('admReset').addEventListener('click', function () {
+                        if (confirm('确定恢复所有默认内容？')) {
+                            localStorage.removeItem(STORE_KEY);
+                            location.reload();
+                        }
+                    });
+                }, 0); /* end setTimeout — admin DOM bindings */
+
+                function esc(s) { return (s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+            }());
+        }());
+    </script>
+
+    <!-- BUBBLE POPUP HTML -->
+    <div id="bubblePopup">
+        <div id="bubblePopBox">
+            <div id="bubblePopHd">
+                <span id="bubblePopTitle"></span>
+                <button id="bubblePopClose"
+                    onclick="document.getElementById('bubblePopup').classList.remove('on')">×</button>
+            </div>
+            <div id="bubblePopBody">
+                <div id="bubblePopAnalysis"></div>
+                <div id="bubblePopNote">💡 以上为系统简析，每位同学情况不同，专业老师可根据你的分数、省份、意向给出精准建议。</div>
+                <a id="bubblePopCta" target="_blank" rel="noopener">📲 获取详细一对一分析 →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL HTML -->
+    <div id="admOverlay">
+        <div id="admBox">
+            <!-- Login -->
+            <div id="admLogin">
+                <div class="adm-hd">
+                    <h2>⚙️ 管理员入口</h2>
+                    <button class="adm-x" id="admCloseLogin"
+                        onclick="document.getElementById('admOverlay').classList.remove('on')">×</button>
+                </div>
+                <div style="padding:32px 28px;display:flex;flex-direction:column;gap:14px">
+                    <h3 style="margin:0;font-size:.95rem;color:#64748b">请输入管理员账号和密码</h3>
+                    <input class="adm-input" id="admUser" type="text" placeholder="账号" autocomplete="username">
+                    <input class="adm-input" id="admPass" type="password" placeholder="密码"
+                        autocomplete="current-password">
+                    <div id="admErr"></div>
+                    <button class="adm-login-btn" id="admLoginBtn">登 录</button>
+                </div>
+            </div>
+            <!-- Dashboard -->
+            <div id="admDash" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+                <div class="adm-hd">
+                    <h2>⚙️ 内容管理后台</h2>
+                    <div class="adm-hd-r">
+                        <button class="adm-ghost" id="admReset">恢复默认</button>
+                        <button class="adm-ghost" id="admLogout">退出</button>
+                        <button class="adm-x" id="admCloseDash"
+                            onclick="document.getElementById('admOverlay').classList.remove('on')">×</button>
+                    </div>
+                </div>
+                <div class="adm-tabs">
+                    <button class="adm-tab on" data-tab="ann">📢 公告滚动</button>
+                    <button class="adm-tab" data-tab="ql">⚡ 快捷入口</button>
+                    <button class="adm-tab" data-tab="float">💬 悬浮按钮</button>
+                    <button class="adm-tab" data-tab="cd">⏰ 倒计时</button>
+                    <button class="adm-tab" data-tab="ads">🖼 广告管理</button>
+                    <button class="adm-tab" data-tab="cloud">☁️ 云配置</button>
+                </div>
+                <div class="adm-body">
+                    <!-- 公告 -->
+                    <div class="adm-pane on" id="adm-ann">
+                        <p class="adm-hint">每行一条公告文字，保存后页面自动刷新生效</p>
+                        <textarea class="adm-ta" id="admAnnTA"></textarea>
+                    </div>
+                    <!-- 快捷入口 -->
+                    <div class="adm-pane" id="adm-ql">
+                        <p class="adm-hint">可增删改每个功能卡片，URL 填阳光高考对应页面地址</p>
+                        <div id="admQlList"></div>
+                        <button class="adm-add" id="admQlAdd">＋ 新增入口</button>
+                    </div>
+                    <!-- 悬浮按钮 -->
+                    <div class="adm-pane" id="adm-float">
+                        <p class="adm-hint">右下角绿色咨询按钮的配置</p>
+                        <div class="adm-field-row">
+                            <label class="adm-label">微信 / 企业微信跳转链接</label>
+                            <input class="adm-input" id="admFloatUrl" type="text"
+                                placeholder="https://work.weixin.qq.com/...">
+                        </div>
+                        <div class="adm-field-row">
+                            <label class="adm-label">按钮下方文字</label>
+                            <input class="adm-input" id="admFloatText" type="text" placeholder="立即咨询">
+                        </div>
+                        <div class="adm-field-row">
+                            <label class="adm-label">是否显示按钮</label>
+                            <select class="adm-input" id="admFloatShow">
+                                <option value="1">显示</option>
+                                <option value="0">隐藏</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- 倒计时 -->
+                    <div class="adm-pane" id="adm-cd">
+                        <p class="adm-hint">Hero 区显示的倒计时，日期格式 YYYY-MM-DD</p>
+                        <div id="admCdList"></div>
+                        <button class="adm-add" id="admCdAdd">＋ 新增倒计时</button>
+                    </div>
+                    <!-- 广告管理 -->
+                    <div class="adm-pane" id="adm-ads">
+                        <p class="adm-hint">轮播横幅图（Carousel）：图片路径填 images/carousel/xxx.jpg，或填完整 https:// 网络地址</p>
+                        <div id="admCarList"></div>
+                        <button class="adm-add" id="admCarAdd">＋ 新增轮播图</button>
+                        <p class="adm-hint" style="margin-top:18px">推广广告位（Ads）：建议 4 张，图片比例 4:3</p>
+                        <div id="admAdList"></div>
+                        <button class="adm-add" id="admAdAdd">＋ 新增广告位</button>
+                    </div>
+                    <!-- 云配置 -->
+                    <div class="adm-pane" id="adm-cloud">
+                        <p class="adm-hint">配置后，管理员保存的内容将同步到云端，所有访问者刷新页面即可看到最新内容。全程免费，无需服务器。</p>
+                        <div class="adm-field-row">
+                            <label class="adm-label">📦 JSONbin Master Key <small style="color:#94a3b8">（jsonbin.io →
+                                    Account → API Keys）</small></label>
+                            <input class="adm-input" id="admCloudJbKey" placeholder="$2b$10$..." autocomplete="off">
+                        </div>
+                        <div class="adm-field-row">
+                            <label class="adm-label">🗂 JSONbin Bin ID <small style="color:#94a3b8">（创建 Bin 后 URL
+                                    最后一段）</small></label>
+                            <input class="adm-input" id="admCloudJbId" placeholder="6849abc123..." autocomplete="off">
+                        </div>
+                        <div class="adm-field-row">
+                            <label class="adm-label">🌐 Cloudinary Cloud Name <small style="color:#94a3b8">（免费 —
+                                    cloudinary.com → Dashboard 首行）</small></label>
+                            <input class="adm-input" id="admCloudCldName" placeholder="my-cloud-name"
+                                autocomplete="off">
+                        </div>
+                        <div class="adm-field-row">
+                            <label class="adm-label">📌 Upload Preset <small style="color:#94a3b8">（Settings → Upload →
+                                    Upload presets → 新建选 Unsigned）</small></label>
+                            <input class="adm-input" id="admCloudCldPreset" placeholder="ml_default" autocomplete="off">
+                        </div>
+                        <p class="adm-hint" style="margin-top:8px;color:#6C63FF">Cloudinary 免费套 25GB
+                            存储、无需信用卡。配置后点击保存，上传的图片将自动获得全球公开 URL，所有用户刷新即可看到。</p>
+                    </div>
+                </div>
+                <div class="adm-ft">
+                    <button class="adm-reset-btn" id="admCancelBtn"
+                        onclick="document.getElementById('admOverlay').classList.remove('on')">取消</button>
+                    <button class="adm-save" id="admSave">💾 保存并刷新生效</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
