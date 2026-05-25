@@ -1184,6 +1184,121 @@
             backdrop-filter: blur(6px)
         }
 
+        /* ===== WECHAT QR POPUP ===== */
+        #wxQrPopup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            background: rgba(0, 0, 0, .55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #wxQrPopup.on {
+            display: flex;
+        }
+
+        #wxQrBox {
+            background: #fff;
+            border-radius: 22px;
+            width: min(88vw, 340px);
+            box-shadow: 0 24px 64px rgba(7, 193, 96, .22), 0 4px 16px rgba(0, 0, 0, .12);
+            overflow: hidden;
+            animation: popIn .28s cubic-bezier(.34, 1.56, .64, 1) both;
+        }
+
+        #wxQrHd {
+            background: linear-gradient(135deg, #07C160, #0ab059);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #wxQrHd span {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        #wxQrClose {
+            background: rgba(255, 255, 255, .22);
+            border: none;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #wxQrBody {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #wxQrImg {
+            width: 100%;
+            max-width: 220px;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto 14px;
+        }
+
+        #wxQrNoImg {
+            width: 180px;
+            height: 180px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 2.5rem;
+        }
+
+        #wxQrTip {
+            font-size: .82rem;
+            color: #6b7280;
+            margin-bottom: 14px;
+        }
+
+        #wxQrLink {
+            display: block;
+            width: 100%;
+            padding: 12px 0;
+            background: linear-gradient(135deg, #07C160, #0ab059);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: .95rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: opacity .2s;
+        }
+
+        #wxQrLink:hover {
+            opacity: .88;
+        }
+
+        /* admin overlay mobile fix */
+        #admOverlay {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #admDash {
+            max-height: 92vh;
+        }
+
         /* ===== FOOTER ===== */
         .footer {
             background: var(--dark);
@@ -1944,7 +2059,7 @@
 
     <!-- HIDDEN ADMIN TRIGGER (bottom-left, 5 clicks) -->
     <div id="admFooterTrigger"
-        style="position:fixed;bottom:0;left:0;width:72px;height:48px;z-index:9999;cursor:default;user-select:none;">
+        style="position:fixed;bottom:0;left:0;width:90px;height:64px;z-index:9999;cursor:default;user-select:none;-webkit-tap-highlight-color:transparent;">
     </div>
 
     <!-- FOOTER -->
@@ -1961,6 +2076,22 @@
             © 高考志愿填报指南
         </div>
     </footer>
+
+    <!-- WECHAT QR POPUP -->
+    <div id="wxQrPopup">
+        <div id="wxQrBox">
+            <div id="wxQrHd">
+                <span>📱 扫码加老师微信</span>
+                <button id="wxQrClose">×</button>
+            </div>
+            <div id="wxQrBody">
+                <img id="wxQrImg" src="" alt="企业微信二维码" style="display:none">
+                <div id="wxQrNoImg">📱</div>
+                <p id="wxQrTip">长按识别或扫一扫二维码，添加老师上丁儿寻志愿填报指导</p>
+                <a id="wxQrLink" href="#" target="_blank" rel="noopener">🚀 直接跳转企业微信</a>
+            </div>
+        </div>
+    </div>
 
     <!-- FLOAT -->
     <div class="float-w" id="floatW" style="display:none">
@@ -2233,8 +2364,23 @@
             if (fb && fb.show) {
                 var fw = document.getElementById('floatW'); fw.style.display = 'flex';
                 document.getElementById('floatLbl').textContent = fb.text || '立即咨询';
-                document.getElementById('floatBtn').addEventListener('click', function () { if (fb.url) window.open(fb.url, '_blank', 'noopener') });
+                document.getElementById('floatBtn').addEventListener('click', function () {
+                    var qrImg = document.getElementById('wxQrImg');
+                    var qrNoImg = document.getElementById('wxQrNoImg');
+                    var qrLink = document.getElementById('wxQrLink');
+                    if (fb.wxQrCode) { qrImg.src = fb.wxQrCode; qrImg.style.display = 'block'; qrNoImg.style.display = 'none'; }
+                    else { qrImg.style.display = 'none'; qrNoImg.style.display = 'flex'; }
+                    if (fb.url) { qrLink.href = fb.url; qrLink.style.display = 'block'; }
+                    else { qrLink.style.display = 'none'; }
+                    document.getElementById('wxQrPopup').classList.add('on');
+                });
             }
+            document.getElementById('wxQrClose').addEventListener('click', function () {
+                document.getElementById('wxQrPopup').classList.remove('on');
+            });
+            document.getElementById('wxQrPopup').addEventListener('click', function (e) {
+                if (e.target === this) this.classList.remove('on');
+            });
 
             /* SCROLL FADE */
             var fels = document.querySelectorAll('.fu');
@@ -2265,12 +2411,14 @@
                 /* --- secret footer trigger: click bottom-left 5+ times within 2s --- */
                 var footTrig = document.getElementById('admFooterTrigger');
                 var fClickQ = 0, fClickT;
-                footTrig.addEventListener('click', function () {
+                function _footTap() {
                     fClickQ++;
                     clearTimeout(fClickT);
                     fClickT = setTimeout(function () { fClickQ = 0; }, 2000);
                     if (fClickQ >= 5) { fClickQ = 0; openAdm(); }
-                });
+                }
+                footTrig.addEventListener('click', _footTap);
+                footTrig.addEventListener('touchstart', function (e) { e.preventDefault(); _footTap(); }, { passive: false });
 
                 function openAdm() {
                     document.getElementById('admOverlay').classList.add('on');
@@ -2353,6 +2501,13 @@
                         document.getElementById('admFloatUrl').value = fb.url || '';
                         document.getElementById('admFloatText').value = fb.text || '立即咨询';
                         document.getElementById('admFloatShow').value = fb.show ? '1' : '0';
+                        var _qrUrl = fb.wxQrCode || '';
+                        document.getElementById('admWxQrUrl').value = _qrUrl;
+                        if (_qrUrl) {
+                            var _ti = document.getElementById('admWxQrThumbImg');
+                            _ti.src = _qrUrl; _ti.style.display = 'block';
+                            document.querySelector('#admWxQrThumb .adm-thumb-icon').style.display = 'none';
+                        }
 
                         /* 倒计时 */
                         renderCD();
@@ -2481,6 +2636,39 @@
                         return row;
                     }
 
+                    /* --- QR code upload --- */
+                    document.getElementById('admWxQrUpload').addEventListener('click', function () {
+                        document.getElementById('admWxQrFile').click();
+                    });
+                    document.getElementById('admWxQrThumb').addEventListener('click', function () {
+                        document.getElementById('admWxQrFile').click();
+                    });
+                    document.getElementById('admWxQrFile').addEventListener('change', function () {
+                        var file = this.files[0]; if (!file) return;
+                        var cs = cfg.cloudStorage || {};
+                        var urlInput = document.getElementById('admWxQrUrl');
+                        var ti = document.getElementById('admWxQrThumbImg');
+                        var icon = document.querySelector('#admWxQrThumb .adm-thumb-icon');
+                        if (cs.cloudinaryName && cs.cloudinaryPreset) {
+                            var btn = document.getElementById('admWxQrUpload');
+                            btn.classList.add('loading'); btn.textContent = '上传中…';
+                            var fd = new FormData();
+                            fd.append('file', file); fd.append('upload_preset', cs.cloudinaryPreset);
+                            fetch('https://api.cloudinary.com/v1_1/' + cs.cloudinaryName + '/image/upload', { method: 'POST', body: fd })
+                                .then(function (r) { return r.json(); })
+                                .then(function (d) {
+                                    if (d.secure_url) {
+                                        urlInput.value = d.secure_url;
+                                        ti.src = d.secure_url; ti.style.display = 'block';
+                                        if (icon) icon.style.display = 'none';
+                                        showToast('✅ 二维码已上传至云端');
+                                    } else { fallbackBase64(file, urlInput, ti, icon); }
+                                })
+                                .catch(function () { fallbackBase64(file, urlInput, ti, icon); })
+                                .finally(function () { btn.classList.remove('loading'); btn.innerHTML = '📷 上传'; this.value = ''; }.bind(this));
+                        } else { fallbackBase64(file, urlInput, ti, icon); this.value = ''; }
+                    });
+
                     /* --- quicklinks --- */
                     function renderQL() {
                         var list = document.getElementById('admQlList');
@@ -2585,7 +2773,8 @@
                         cfg.floatBtn = {
                             url: document.getElementById('admFloatUrl').value.trim(),
                             text: document.getElementById('admFloatText').value.trim() || '立即咨询',
-                            show: document.getElementById('admFloatShow').value === '1'
+                            show: document.getElementById('admFloatShow').value === '1',
+                            wxQrCode: document.getElementById('admWxQrUrl').value.trim()
                         };
 
                         /* 倒计时 */
@@ -2764,6 +2953,20 @@
                                 <option value="1">显示</option>
                                 <option value="0">隐藏</option>
                             </select>
+                        </div>
+                        <div class="adm-field-row">
+                            <label class="adm-label">📱 二维码图片 <small
+                                    style="color:#94a3b8">（点击按鈕就元一起弹出扫码窗口）</small></label>
+                            <div style="display:flex;gap:8px;align-items:center">
+                                <div class="adm-thumb-wrap" id="admWxQrThumb"
+                                    style="width:56px;height:56px;flex-shrink:0">
+                                    <img id="admWxQrThumbImg" src="" style="display:none">
+                                    <span class="adm-thumb-icon">📱</span>
+                                </div>
+                                <input class="adm-input" id="admWxQrUrl" placeholder="https://二维码图片地址" style="flex:1">
+                                <button class="adm-upload-btn" id="admWxQrUpload" type="button">📷 上传</button>
+                                <input type="file" id="admWxQrFile" accept="image/*" style="display:none">
+                            </div>
                         </div>
                     </div>
                     <!-- 倒计时 -->
