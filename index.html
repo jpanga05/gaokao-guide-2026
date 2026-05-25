@@ -192,7 +192,7 @@
             align-items: center;
             gap: 8px;
             position: relative;
-            z-index: 1;
+            z-index: 4;
             background: rgba(124, 111, 239, 0.14);
             border: 1.5px solid rgba(124, 111, 239, 0.45);
             color: #5B51D8;
@@ -231,7 +231,7 @@
 
         .hero h1 {
             position: relative;
-            z-index: 1;
+            z-index: 4;
             font-size: clamp(2.5rem, 7.5vw, 4.8rem);
             font-weight: 900;
             color: var(--dark);
@@ -262,7 +262,7 @@
 
         .hero-sub {
             position: relative;
-            z-index: 1;
+            z-index: 4;
             font-size: clamp(.93rem, 2.5vw, 1.15rem);
             color: #64748B;
             max-width: 520px;
@@ -273,7 +273,7 @@
 
         .hero-btns {
             position: relative;
-            z-index: 1;
+            z-index: 4;
             display: flex;
             gap: 14px;
             justify-content: center;
@@ -347,7 +347,7 @@
         /* ===== COUNTDOWN (hero内, 超大) ===== */
         .cds {
             position: relative;
-            z-index: 1;
+            z-index: 4;
             display: flex;
             gap: clamp(12px, 3vw, 32px);
             justify-content: center;
@@ -444,6 +444,18 @@
             overflow: hidden;
             pointer-events: none;
             z-index: 2;
+        }
+
+        @media (max-width: 680px) {
+            #bubbleWrap {
+                opacity: 0.72;
+            }
+
+            .hb {
+                padding: 8px 14px !important;
+                font-size: .72rem !important;
+                border-radius: 999px;
+            }
         }
 
         .hb:hover {
@@ -2045,6 +2057,7 @@
                 '\u73b0\u5728\u8054\u7cfb\u4e13\u5bb6\uff0c\u53ef\u4eab\u514d\u8d39\u521d\u6b65\u8bc4\u4f30\uff1a\u6839\u636e\u4f60\u7684\u5206\u6570\u548c\u7701\u4efd\uff0c\u5feb\u901f\u7ed9\u51fa\u53ef\u62a5\u9662\u6821\u8303\u56f4\u548c\u4e13\u4e1a\u5efa\u8bae\uff0c\u5e2e\u4f60\u7406\u6e05\u601d\u8def\u3002'
             ];
             bTexts.forEach(function (txt, i) {
+                if (window.innerWidth < 680 && i >= 10) return;
                 var el = document.createElement('div');
                 el.className = 'hb hb-' + (i % 8);
                 el.textContent = txt;
@@ -2068,9 +2081,10 @@
                 bwEl.appendChild(el);
                 bubs.push({ el: el, x: 0, y: 0, vx: 0, vy: 0, w: 0, h: 0, zone: i % 2 === 0 ? 'L' : 'R', zx1: 0, zx2: 0, paused: false });
             });
+            var isMobile = window.innerWidth < 680;
             var MAX_SPD = 0.28;
             function calcZone(b, W) {
-                var zw = W * 0.29;
+                var zw = W * (isMobile ? 0.40 : 0.29);
                 if (b.zone === 'L') { b.zx1 = 0; b.zx2 = zw; }
                 else { b.zx1 = W - zw; b.zx2 = W; }
             }
